@@ -1,11 +1,14 @@
+import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
+
 import java.util.ArrayList;
+import java.util.Set;
 
 /**
  * Created by Jessica on 18/11/2014.
  */
 public class Utilities {
     public String extractTextFromSource(String text) {
-//        String testString = "<a href=\"http://twitterfeed.com\" rel=\"nofollow\">twitterfeed</a>";
         StringBuilder stringBuilder = new StringBuilder();
 
         if (text.contains(">")) {
@@ -29,6 +32,17 @@ public class Utilities {
             charList.add(str.charAt(i));
         }
         return charList;
+    }
+
+    public Set<String> getSourceWhitelist() {
+        Set<String> whitelist = Sets.newHashSet();
+
+        whitelist.add("Twitter for iPhone");
+        whitelist.add("Twitter for iPad");
+        whitelist.add("Twitter for Android");
+        whitelist.add("Twitter for Android Tablets");
+
+        return whitelist;
     }
 
     public static void main(String[] args) {

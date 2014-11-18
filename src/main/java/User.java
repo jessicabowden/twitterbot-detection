@@ -3,13 +3,13 @@
  */
 public class User {
     String username;
-    boolean isBot;
     long user_id;
     boolean isVerified;
+    BotStatus botStatus;
 
-    public User(String username, boolean isBot, long user_id) {
+    public User(String username, BotStatus botStatus, long user_id) {
         this.username = username;
-        this.isBot = isBot;
+        this.botStatus = botStatus;
         this.user_id = user_id;
     }
 
@@ -21,15 +21,12 @@ public class User {
         this.username = username;
     }
 
-    public boolean isBot() {
-        return isBot;
+    public BotStatus botStatus() {
+        return botStatus;
     }
 
-    public void setBot(boolean isBot) {
-        if (isVerified() == true) {
-            this.isBot = false;
-        }
-        this.isBot = isBot;
+    public void setBot(BotStatus botStatus) {
+        this.botStatus = botStatus;
     }
 
     public long getUser_id() {

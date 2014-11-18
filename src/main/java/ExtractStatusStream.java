@@ -2,6 +2,8 @@ import com.google.common.collect.Lists;
 import twitter4j.Status;
 
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Created by Jessica on 18/11/2014.
@@ -10,6 +12,7 @@ public class ExtractStatusStream {
     StatusStream statusStream = new StatusStream();
     InsertIntoTables insertIntoTables = new InsertIntoTables();
     Utilities utilities = new Utilities();
+    Set<String> whitelist = utilities.getSourceWhitelist();
 
     //extracts data from Status objects returned
     public ArrayList<Tweet> extractData() {
@@ -19,20 +22,14 @@ public class ExtractStatusStream {
             Tweet tweet = new Tweet(status.getId(), status.getText(), status.getUser().getId(), url);
             tweets.add(tweet);
 
-            String source = status.getSource();
-            String extractedSource = utilities.extractTextFromSource(source);
-            System.out.println(extractedSource);
+            String source = utilities.extractTextFromSource(status.getSource());
+            BotStatus botStatus = BotStatus.UNDECIDED;
 
-            System.out.println(status.getText());
+            if (whitelist.contains(source) || status.getUser().isVerified()) {
+                botStatus = BotStatus.FALSE;
+            }
 
-            twitter4j.User twitterUser = status.getUser();
-            boolean verified = twitterUser.isVerified();
-//            if (verified == true) {
-//                tweet.createUser(twitterUser.getScreenName(), false, twitterUser.getId());
-//            }
-//            else {
-//                tweet.createUser(twitterUser.getScreenName(), false, twitterUser.getId());
-//            }
+//            User user = new User(status.getUser().getScreenName(), isBot, )
 
         }
         return tweets;
@@ -47,7 +44,9 @@ public class ExtractStatusStream {
 
     public static void main(String[] args) {
         ExtractStatusStream extractStatusStream = new ExtractStatusStream();
-        extractStatusStream.extractData();
+        BotStatus botStatus = BotStatus.FALSE;
+        System.out.println(botStatus);
+
     }
 
 }
