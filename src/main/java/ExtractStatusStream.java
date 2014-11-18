@@ -9,6 +9,7 @@ import java.util.ArrayList;
 public class ExtractStatusStream {
     StatusStream statusStream = new StatusStream();
     InsertIntoTables insertIntoTables = new InsertIntoTables();
+    Utilities utilities = new Utilities();
 
     //extracts data from Status objects returned
     public ArrayList<Tweet> extractData() {
@@ -18,17 +19,20 @@ public class ExtractStatusStream {
             Tweet tweet = new Tweet(status.getId(), status.getText(), status.getUser().getId(), url);
             tweets.add(tweet);
 
-            System.out.println("SOURCE " + status.getSource());
+            String source = status.getSource();
+            String extractedSource = utilities.extractTextFromSource(source);
+            System.out.println(extractedSource);
+
             System.out.println(status.getText());
 
             twitter4j.User twitterUser = status.getUser();
             boolean verified = twitterUser.isVerified();
-            if (verified == true) {
-                tweet.createUser(twitterUser.getScreenName(), false, twitterUser.getId());
-            }
-            else {
-                tweet.createUser(twitterUser.getScreenName(), false, twitterUser.getId());
-            }
+//            if (verified == true) {
+//                tweet.createUser(twitterUser.getScreenName(), false, twitterUser.getId());
+//            }
+//            else {
+//                tweet.createUser(twitterUser.getScreenName(), false, twitterUser.getId());
+//            }
 
         }
         return tweets;
@@ -39,6 +43,11 @@ public class ExtractStatusStream {
         for (Tweet tweet : extractData()) {
             insertIntoTables.insertIntoTweetTable(tweet);
         }
+    }
+
+    public static void main(String[] args) {
+        ExtractStatusStream extractStatusStream = new ExtractStatusStream();
+        extractStatusStream.extractData();
     }
 
 }
