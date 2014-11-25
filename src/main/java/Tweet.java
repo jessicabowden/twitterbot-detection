@@ -25,7 +25,7 @@ public class Tweet {
 
     public User createUser(String username, boolean isBot, long user_id) {
         System.out.println("creating user");
-        user = new User(username, isBot, user_id);
+//        user = new User(username, isBot, user_id);
         return user;
     }
 
