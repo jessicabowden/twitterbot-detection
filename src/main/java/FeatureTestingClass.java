@@ -1,9 +1,8 @@
 import com.google.common.collect.Lists;
-import twitter4j.ResponseList;
-import twitter4j.Status;
-import twitter4j.URLEntity;
+import com.google.common.collect.Maps;
+import twitter4j.*;
 
-import java.util.ArrayList;
+import java.util.*;
 
 /**
  * Created by Jessica on 19/11/2014.
@@ -84,13 +83,82 @@ public class FeatureTestingClass {
 //        }
     }
 
+    public ArrayList<String> mostPopularLocation(String user) {
+        ResponseList<Status> tweets = getTweetsByUser.getTweetsFromUser(10, user);
+        SortedMap<String, Integer> tweetOrigins = Maps.newTreeMap();
+        ArrayList<String> topSources = Lists.newArrayList();
+
+        for (Status status : tweets) {
+            String tweetOrigin = utilities.extractTextFromSource(status.getSource());
+            if (tweetOrigins.containsKey(tweetOrigin)) {
+                tweetOrigins.replace(tweetOrigin, tweetOrigins.get(tweetOrigin) + 1);
+            }
+            else {
+                tweetOrigins.put(tweetOrigin, 1);
+            }
+        }
+
+        if (tweetOrigins.size() < 3) {
+            topSources.add(tweetOrigins.firstKey());
+        }
+        else if (tweetOrigins.size() <2) {
+            int i = 1;
+            while (i < 2) {
+                topSources.add(tweetOrigins.lastKey());
+                tweetOrigins.remove(tweetOrigins.lastKey());
+                i++;
+            }
+        }
+        else {
+            int i = 1;
+            while (i < 3) {
+                topSources.add(tweetOrigins.lastKey());
+                tweetOrigins.remove(tweetOrigins.lastKey());
+                i++;
+            }
+        }
+
+        return topSources;
+    }
+
+    public ArrayList<Integer> followersToFollowing(String username) {
+        twitter4j.User u = getTweetsByUser.getUserObject(username);
+        Integer followers = u.getFollowersCount();
+        Integer following = u.getFriendsCount();
+        ArrayList<Integer> ratio = Lists.newArrayList();
+        ratio.add(followers);
+        ratio.add(following);
+        return ratio;
+    }
+
+    public void followersToFollowingAsPerecntage(ArrayList<Integer> counts) {
+        Integer followers = counts.get(0);
+        Integer following = counts.get(1);
+    }
+
     public static void main(String[] args) throws InterruptedException {
         FeatureTestingClass featureTestingClass = new FeatureTestingClass();
-//        System.out.println(featureTestingClass.numberOfRetweetsForUser("caindiru"));
+        Utilities utilities1 = new Utilities();
 
-//        featureTestingClass.mostCommonSites();
+        ArrayList<String> bots = utilities1.sampleBots();
+        ArrayList<String> nonbots = utilities1.sampleNonBots();
 
-        System.out.println(featureTestingClass.listOfLinksFromUser("TriiSHE"));
+        ArrayList<String> botinfo = Lists.newArrayList();
+        ArrayList<String> nonbotinfo = Lists.newArrayList();
+
+        for (String bot : bots) {
+            botinfo.add(bot);
+            botinfo.add(featureTestingClass.mostPopularLocation(bot).toString());
+            botinfo.add("\n");
+        }
+        utilities1.stringToFile(botinfo, "botinfo.txt");
+
+        for (String nonbot : nonbots) {
+            nonbotinfo.add(nonbot);
+            nonbotinfo.add(featureTestingClass.mostPopularLocation(nonbot).toString());
+            nonbotinfo.add("\n");
+        }
+        utilities1.stringToFile(nonbotinfo, "nonbotinfo.txt");
 
     }
 }

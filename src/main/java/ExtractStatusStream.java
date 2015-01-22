@@ -10,7 +10,7 @@ import java.util.Set;
  */
 public class ExtractStatusStream {
     StatusStream statusStream = new StatusStream();
-    InsertIntoTables insertIntoTables = new InsertIntoTables();
+//    InsertIntoTables insertIntoTables = new InsertIntoTables();
     Utilities utilities = new Utilities();
     Set<String> whitelist = utilities.getSourceWhitelist();
 
@@ -35,12 +35,12 @@ public class ExtractStatusStream {
         return tweets;
     }
 
-    public void insertTweets() {
-        insertIntoTables.initialiseConnection();
-        for (Tweet tweet : extractData()) {
-            insertIntoTables.insertIntoTweetTable(tweet);
-        }
-    }
+//    public void insertTweets() {
+//        insertIntoTables.initialiseConnection();
+//        for (Tweet tweet : extractData()) {
+//            insertIntoTables.insertIntoTweetTable(tweet);
+//        }
+//    }
 
     public static void main(String[] args) {
         ExtractStatusStream extractStatusStream = new ExtractStatusStream();

@@ -7,9 +7,8 @@ import twitter4j.internal.org.json.JSONObject;
 import javax.lang.model.element.Element;
 import javax.print.URIException;
 import javax.xml.soap.Node;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
+import java.lang.reflect.Array;
 import java.net.*;
 import java.util.ArrayList;
 import java.util.Set;
@@ -30,8 +29,8 @@ public class Utilities {
                     int position2 = text.indexOf("</a>");
 
                     if (i > position && i < position2) {
-                    stringBuilder.append(list.get(i));
-                }
+                        stringBuilder.append(list.get(i));
+                    }
             }
         }
         return stringBuilder.toString();
@@ -115,13 +114,17 @@ public class Utilities {
         bots.add("EricWilsonBeatz");
         bots.add("itakethelead");
         bots.add("ellenthoen");
-        bots.add("TellurideBlues");
         bots.add("Dinigoarent");
         bots.add("caindiru");
         bots.add("nugrosigit");
-        bots.add("_CGB");
+        bots.add("Gen_Lee_Camp");
         bots.add("kobra_kid_chloe");
         bots.add("Quotablest");
+        bots.add("Glennyzp");
+        bots.add("beverlyjack93");
+        bots.add("yourdealtime");
+        bots.add("SmartPhoneMilli");
+
 
         return bots;
     }
@@ -139,6 +142,9 @@ public class Utilities {
         nonbots.add("Frenzee");
         nonbots.add("iowarfs");
         nonbots.add("lepolt");
+        nonbots.add("jessicambowden");
+        nonbots.add("cham");
+        nonbots.add("sireyeris");
 
         return nonbots;
     }
@@ -156,6 +162,23 @@ public class Utilities {
             return reverseShortenedURL(url2);
         }
         return url2;
+    }
+
+    public void stringToFile(ArrayList<String> strings, String filename) {
+        PrintWriter out = null;
+        try {
+            out = new PrintWriter(filename);
+        }
+        catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        for (String s : strings) {
+            out.print(s);
+            System.out.println("written a string");
+        }
+
+        out.close();
     }
 
 

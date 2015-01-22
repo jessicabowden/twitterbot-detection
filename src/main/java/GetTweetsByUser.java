@@ -1,4 +1,5 @@
 import twitter4j.*;
+import twitter4j.User;
 
 /**
  * Created by Jessica on 10/11/2014.
@@ -18,13 +19,23 @@ public class GetTweetsByUser {
         return null;
     }
 
+    public User getUserObject(String username) {
+        User user = null;
+        try {
+            user = twitter.showUser(username);
+        }
+        catch (TwitterException e) {
+            e.printStackTrace();
+        }
+
+        return user;
+    }
+
     public static void main(String[] args) {
         GetTweetsByUser getTweetsByUser = new GetTweetsByUser();
         ResponseList<Status> statuses = getTweetsByUser.getTweetsFromUser(100, "jessicambowden");
         for (Status status : statuses) {
             System.out.println(status);
         }
-
-
     }
 }
