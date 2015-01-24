@@ -43,7 +43,7 @@ public class FeatureTestingClass {
     }
 
     public ArrayList<String> listOfLinksFromUser(String user) {
-        ResponseList<Status> tweets = getTweetsByUser.getTweetsFromUser(1000, user);
+        ResponseList<Status> tweets = getTweetsByUser.getTweetsFromUser(100, user);
         ArrayList<String> urllist = Lists.newArrayList();
 
         for (Status status : tweets) {
@@ -148,14 +148,14 @@ public class FeatureTestingClass {
 
         for (String bot : bots) {
             botinfo.add(bot);
-            botinfo.add(featureTestingClass.mostPopularLocation(bot).toString());
+            botinfo.add(featureTestingClass.followersToFollowing(bot).toString());
             botinfo.add("\n");
         }
         utilities1.stringToFile(botinfo, "botinfo.txt");
 
         for (String nonbot : nonbots) {
             nonbotinfo.add(nonbot);
-            nonbotinfo.add(featureTestingClass.mostPopularLocation(nonbot).toString());
+            nonbotinfo.add(featureTestingClass.followersToFollowing(nonbot).toString());
             nonbotinfo.add("\n");
         }
         utilities1.stringToFile(nonbotinfo, "nonbotinfo.txt");

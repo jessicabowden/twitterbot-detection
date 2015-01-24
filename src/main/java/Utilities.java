@@ -109,44 +109,11 @@ public class Utilities {
     }
 
     public ArrayList<String> sampleBots() {
-        ArrayList<String> bots = Lists.newArrayList();
-
-        bots.add("EricWilsonBeatz");
-        bots.add("itakethelead");
-        bots.add("ellenthoen");
-        bots.add("Dinigoarent");
-        bots.add("caindiru");
-        bots.add("nugrosigit");
-        bots.add("Gen_Lee_Camp");
-        bots.add("kobra_kid_chloe");
-        bots.add("Quotablest");
-        bots.add("Glennyzp");
-        bots.add("beverlyjack93");
-        bots.add("yourdealtime");
-        bots.add("SmartPhoneMilli");
-
-
-        return bots;
+        return fileToArray("botlist.txt");
     }
 
     public ArrayList<String> sampleNonBots() {
-        ArrayList<String> nonbots = Lists.newArrayList();
-
-        nonbots.add("TriiSHE");
-        nonbots.add("rachelmbray");
-        nonbots.add("matthewpack");
-        nonbots.add("tobewan");
-        nonbots.add("jmck");
-        nonbots.add("Mxit");
-        nonbots.add("MIA_Kev");
-        nonbots.add("Frenzee");
-        nonbots.add("iowarfs");
-        nonbots.add("lepolt");
-        nonbots.add("jessicambowden");
-        nonbots.add("cham");
-        nonbots.add("sireyeris");
-
-        return nonbots;
+        return fileToArray("nonbotlist.txt");
     }
 
     public String reverseShortenedURL(String shorturl) throws Exception {
@@ -179,6 +146,31 @@ public class Utilities {
         }
 
         out.close();
+    }
+
+    public ArrayList<String> fileToArray(String name) {
+        File file = new File(name);
+        BufferedReader reader = null;
+        String curr = null;
+        ArrayList<String> fileContents = Lists.newArrayList();
+
+        try {
+            reader = new BufferedReader(new FileReader(file));
+        }
+        catch (FileNotFoundException e) {
+            System.out.println("Can't find file " + name);
+        }
+
+        try {
+            while ((curr = reader.readLine())!= null) {
+                fileContents.add(curr);
+            }
+        }
+        catch (IOException e) {
+            System.out.println("Can't read from file " + name );
+        }
+
+        return fileContents;
     }
 
 

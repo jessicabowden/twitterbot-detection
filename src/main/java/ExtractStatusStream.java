@@ -20,6 +20,7 @@ public class ExtractStatusStream {
         for (Status status : statusStream.getStatuses()) {
             String url = "twitter.com/" + status.getUser().getScreenName() + "/status/" + status.getId();
             Tweet tweet = new Tweet(status.getId(), status.getText(), status.getUser().getId(), url);
+            System.out.println(status.getUser());
             tweets.add(tweet);
 
             String source = utilities.extractTextFromSource(status.getSource());
@@ -44,9 +45,11 @@ public class ExtractStatusStream {
 
     public static void main(String[] args) {
         ExtractStatusStream extractStatusStream = new ExtractStatusStream();
-        BotStatus botStatus = BotStatus.FALSE;
-        System.out.println(botStatus);
-
+//        ArrayList<Tweet> tweets = extractStatusStream.extractData();
+//        for (Tweet tweet : tweets) {
+//            System.out.println(tweet.getStatus());
+//        }
+        extractStatusStream.extractData();
     }
 
 }
