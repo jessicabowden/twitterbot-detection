@@ -52,12 +52,6 @@ public class FeatureTestingClass {
                 String shorturl = url.getURL();
 //                String longurl = utilities.reverseShortenedURL(shorturl);
                 String longurl = "";
-                try {
-                    Thread.sleep(5000);
-                }
-                catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
                 urllist.add(longurl);
             }
         }
@@ -68,23 +62,38 @@ public class FeatureTestingClass {
         ArrayList<String> nonbots = utilities.sampleNonBots();
         ArrayList<String> bots = utilities.sampleBots();
 
-        System.out.println("Non-bots:");
+        ArrayList<String> botinfo = Lists.newArrayList();
+        ArrayList<String> nonbotinfo = Lists.newArrayList();
+
         for (String nonbot : nonbots) {
-            System.out.println("----------" + nonbot + "-----------");
-            System.out.println("LINKS: " + listOfLinksFromUser(nonbot));
-            Thread.sleep(5000);
+            ArrayList<String> links = listOfLinksFromUser(nonbot);
+            String linksString = links.toString();
+            nonbotinfo.add(nonbot + "," + linksString + "\n");
+            try {
+                Thread.sleep(5000);
+            }
+            catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }
-//
-//        System.out.println("Bots:");
-//        for (String bot : bots) {
-//            System.out.println(bot);
-//            System.out.println(listOfLinksFromUser(bot));
-//            Thread.sleep(5000);
-//        }
+        utilities.stringToFile(nonbotinfo, "nonbotinfo.txt");
+
+        for (String bot : bots) {
+            ArrayList<String> links = listOfLinksFromUser(bot);
+            String linksString = links.toString();
+            botinfo.add(bot + "," + linksString + "\n");
+            try {
+                Thread.sleep(5000);
+            }
+            catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+        utilities.stringToFile(botinfo, "botinfo.txt");
     }
 
     public ArrayList<String> mostPopularLocation(String user) {
-        ResponseList<Status> tweets = getTweetsByUser.getTweetsFromUser(10, user);
+        ResponseList<Status> tweets = getTweetsByUser.getTweetsFromUser(100, user);
         SortedMap<String, Integer> tweetOrigins = Maps.newTreeMap();
         ArrayList<String> topSources = Lists.newArrayList();
 
@@ -131,11 +140,6 @@ public class FeatureTestingClass {
         return ratio;
     }
 
-    public void followersToFollowingAsPerecntage(ArrayList<Integer> counts) {
-        Integer followers = counts.get(0);
-        Integer following = counts.get(1);
-    }
-
     public static void main(String[] args) throws InterruptedException {
         FeatureTestingClass featureTestingClass = new FeatureTestingClass();
         Utilities utilities1 = new Utilities();
@@ -148,17 +152,17 @@ public class FeatureTestingClass {
 
         for (String bot : bots) {
             botinfo.add(bot);
-            botinfo.add(featureTestingClass.followersToFollowing(bot).toString());
+            botinfo.add(featureTestingClass.mostPopularLocation(bot).toString());
             botinfo.add("\n");
         }
         utilities1.stringToFile(botinfo, "botinfo.txt");
 
         for (String nonbot : nonbots) {
             nonbotinfo.add(nonbot);
-            nonbotinfo.add(featureTestingClass.followersToFollowing(nonbot).toString());
+            nonbotinfo.add(featureTestingClass.mostPopularLocation(nonbot).toString());
             nonbotinfo.add("\n");
         }
         utilities1.stringToFile(nonbotinfo, "nonbotinfo.txt");
-
+//        featureTestingClass.mostCommonSites();
     }
 }
