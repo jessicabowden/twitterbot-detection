@@ -15,6 +15,8 @@ import java.util.StringTokenizer;
  * Created by Jessica on 18/11/2014.
  */
 public class Utilities {
+    ArrayList<String> urls = Lists.newArrayList();
+
     public String extractTextFromSource(String text) {
         StringBuilder stringBuilder = new StringBuilder();
 
@@ -52,47 +54,6 @@ public class Utilities {
         return whitelist;
     }
 
-//    public String expandShortURL(String address) {
-//        URL url = null;
-//        BufferedReader bufferedReader = null;
-//
-//        try {
-//            url = new URL("http://api.longurl.org/v2/expand?format=json&url=" + address);
-//        }
-//        catch (MalformedURLException e) {
-//            System.out.println("Bad url");
-//        }
-//
-//        try {
-//            HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
-//            httpURLConnection.setRequestMethod("GET");
-//            httpURLConnection.connect();
-//
-//            bufferedReader = new BufferedReader(
-//                    new InputStreamReader(httpURLConnection.getInputStream())
-//            );
-//        }
-//        catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//
-//        String line = null;
-//        String full = null;
-//        org.json.JSONObject jsonObject = null;
-//
-//        try {
-//            while ((line = bufferedReader.readLine()) != null) {
-//                full += line;
-//                jsonObject = new org.json.JSONObject(line);
-//            }
-//        }
-//        catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//
-//        return jsonObject.get("long-url").toString();
-//    }
-
     public String getBaseURL(String page) {
         URI uri = null;
         try {
@@ -117,15 +78,19 @@ public class Utilities {
         URL url = new URL(shorturl);
         HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
         httpURLConnection.setInstanceFollowRedirects(false);
+        return httpURLConnection.getHeaderField("location");
+    }
 
-//        String url2 = httpURLConnection.getHeaderField("location");
-        String url2 = httpURLConnection.getURL().toString();
-        System.out.println(url2);
+    public void newReverser(String shorturl) throws Exception {
+        ArrayList<String> urlshorteners = fileToArray("urlshorteners.txt");
+        String curr = null;
 
-        if (!url2.contains("www")) {
-            return reverseShortenedURL(url2);
+        for (String urlshortener : urlshorteners) {
+            if (shorturl.contains(urlshortener)) {
+                curr = reverseShortenedURL(shorturl);
+                System.out.println(curr);
+            }
         }
-        return url2;
     }
 
     public void stringToFile(ArrayList<String> strings, String filename) {
@@ -173,6 +138,8 @@ public class Utilities {
 
     public static void main(String[] args) throws Exception {
         Utilities utilities = new Utilities();
-        utilities.reverseShortenedURL("http://t.co/FICMTydyjk");
+//        utilities.reverseShortenedURL("http://t.co/aEaSAMm9Hw");
+//        utilities.reverseShortenedURL("http://t.co/v4kkFGWQ3Q");
+        utilities.newReverser("http://t.co/aEaSAMm9Hw");
     }
 }

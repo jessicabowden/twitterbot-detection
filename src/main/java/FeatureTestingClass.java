@@ -42,7 +42,7 @@ public class FeatureTestingClass {
         return urlCount;
     }
 
-    public ArrayList<String> listOfLinksFromUser(String user) {
+    public ArrayList<String> listOfLinksFromUser(String user) throws Exception {
         ResponseList<Status> tweets = getTweetsByUser.getTweetsFromUser(100, user);
         ArrayList<String> urllist = Lists.newArrayList();
 
@@ -51,14 +51,15 @@ public class FeatureTestingClass {
             for (URLEntity url : urls) {
                 String shorturl = url.getURL();
 //                String longurl = utilities.reverseShortenedURL(shorturl);
-                String longurl = "";
-                urllist.add(longurl);
+//                System.out.println("------------");
+//                System.out.println(longurl);
+//                urllist.add(longurl);
             }
         }
         return urllist;
     }
 
-    public void mostCommonSites() throws InterruptedException {
+    public void mostCommonSites() throws InterruptedException, Exception {
         ArrayList<String> nonbots = utilities.sampleNonBots();
         ArrayList<String> bots = utilities.sampleBots();
 
@@ -93,12 +94,6 @@ public class FeatureTestingClass {
             }
             else {
                 tweetOrigins.put(tweetOrigin, 1);
-            }
-            try {
-                Thread.sleep(5000);
-            }
-            catch (InterruptedException e) {
-                e.printStackTrace();
             }
         }
 
@@ -139,25 +134,30 @@ public class FeatureTestingClass {
         FeatureTestingClass featureTestingClass = new FeatureTestingClass();
         Utilities utilities1 = new Utilities();
 
-        ArrayList<String> bots = utilities1.sampleBots();
-        ArrayList<String> nonbots = utilities1.sampleNonBots();
-
-        ArrayList<String> botinfo = Lists.newArrayList();
-        ArrayList<String> nonbotinfo = Lists.newArrayList();
-
-        for (String bot : bots) {
-            botinfo.add(bot);
-            botinfo.add(featureTestingClass.mostPopularLocation(bot).toString());
-            botinfo.add("\n");
-        }
-        utilities1.stringToFile(botinfo, "botinfo.txt");
-
-        for (String nonbot : nonbots) {
-            nonbotinfo.add(nonbot);
-            nonbotinfo.add(featureTestingClass.mostPopularLocation(nonbot).toString());
-            nonbotinfo.add("\n");
-        }
+//        ArrayList<String> bots = utilities1.sampleBots();
+//        ArrayList<String> nonbots = utilities1.sampleNonBots();
+//
+//        ArrayList<String> botinfo = Lists.newArrayList();
+//        ArrayList<String> nonbotinfo = Lists.newArrayList();
+//
+//        for (String bot : bots) {
+//            botinfo.add(bot);
+//            botinfo.add(featureTestingClass.mostPopularLocation(bot).toString());
+//            botinfo.add("\n");
+//        }
+//        utilities1.stringToFile(botinfo, "botinfo.txt");
+//
+//        for (String nonbot : nonbots) {
+//            nonbotinfo.add(nonbot);
+//            nonbotinfo.add(featureTestingClass.mostPopularLocation(nonbot).toString());
+//            nonbotinfo.add("\n");
+//        }
 //        utilities1.stringToFile(nonbotinfo, "nonbotinfo.txt");
-//        featureTestingClass.mostCommonSites();
+        try {
+            featureTestingClass.mostCommonSites();
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }
