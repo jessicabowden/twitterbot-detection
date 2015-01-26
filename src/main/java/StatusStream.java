@@ -1,6 +1,7 @@
 import com.google.common.collect.Lists;
 import twitter4j.*;
 import java.util.ArrayList;
+import java.util.Map;
 
 /**
  * Created by Jessica on 18/11/2014.
@@ -10,9 +11,9 @@ public class StatusStream {
     ArrayList<Status> statuses = Lists.newArrayList();
 
     public ArrayList<Status> fetchStatuses() {
-        TwitterStream twitterStream = new TwitterStreamFactory().getInstance();
+        final TwitterStream twitterStream = new TwitterStreamFactory().getInstance();
 
-        StatusListener statusListener = new StatusListener() {
+        final StatusListener statusListener = new StatusListener() {
             @Override
             public void onStatus(Status status) {
                 if (statuses.size() >= 10) {
@@ -74,4 +75,6 @@ public class StatusStream {
         return statuses;
     }
 
+
 }
+

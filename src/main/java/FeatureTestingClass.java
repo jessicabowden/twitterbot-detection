@@ -69,12 +69,6 @@ public class FeatureTestingClass {
             ArrayList<String> links = listOfLinksFromUser(nonbot);
             String linksString = links.toString();
             nonbotinfo.add(nonbot + "," + linksString + "\n");
-            try {
-                Thread.sleep(5000);
-            }
-            catch (InterruptedException e) {
-                e.printStackTrace();
-            }
         }
         utilities.stringToFile(nonbotinfo, "nonbotinfo.txt");
 
@@ -82,12 +76,6 @@ public class FeatureTestingClass {
             ArrayList<String> links = listOfLinksFromUser(bot);
             String linksString = links.toString();
             botinfo.add(bot + "," + linksString + "\n");
-            try {
-                Thread.sleep(5000);
-            }
-            catch (InterruptedException e) {
-                e.printStackTrace();
-            }
         }
         utilities.stringToFile(botinfo, "botinfo.txt");
     }
@@ -100,10 +88,17 @@ public class FeatureTestingClass {
         for (Status status : tweets) {
             String tweetOrigin = utilities.extractTextFromSource(status.getSource());
             if (tweetOrigins.containsKey(tweetOrigin)) {
-                tweetOrigins.replace(tweetOrigin, tweetOrigins.get(tweetOrigin) + 1);
+//                tweetOrigins.replace(tweetOrigin, tweetOrigins.get(tweetOrigin) + 1);
+                tweetOrigins.put(tweetOrigin, tweetOrigins.get(tweetOrigin) + 1);
             }
             else {
                 tweetOrigins.put(tweetOrigin, 1);
+            }
+            try {
+                Thread.sleep(5000);
+            }
+            catch (InterruptedException e) {
+                e.printStackTrace();
             }
         }
 
@@ -162,7 +157,7 @@ public class FeatureTestingClass {
             nonbotinfo.add(featureTestingClass.mostPopularLocation(nonbot).toString());
             nonbotinfo.add("\n");
         }
-        utilities1.stringToFile(nonbotinfo, "nonbotinfo.txt");
+//        utilities1.stringToFile(nonbotinfo, "nonbotinfo.txt");
 //        featureTestingClass.mostCommonSites();
     }
 }

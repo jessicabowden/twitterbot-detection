@@ -16,6 +16,7 @@ public class GetTweetsByUser {
         catch (TwitterException e) {
             e.printStackTrace();
         }
+
         return null;
     }
 

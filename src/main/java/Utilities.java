@@ -1,8 +1,5 @@
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
-import jdk.nashorn.internal.parser.JSONParser;
-import twitter4j.internal.org.json.JSONException;
-import twitter4j.internal.org.json.JSONObject;
 
 import javax.lang.model.element.Element;
 import javax.print.URIException;
