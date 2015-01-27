@@ -74,23 +74,28 @@ public class Utilities {
         return fileToArray("nonbotlist.txt");
     }
 
-    public String reverseShortenedURL(String shorturl) throws Exception {
-        URL url = new URL(shorturl);
-        HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
-        httpURLConnection.setInstanceFollowRedirects(false);
-        return httpURLConnection.getHeaderField("location");
-    }
-
-    public void newReverser(String shorturl) throws Exception {
-        ArrayList<String> urlshorteners = fileToArray("urlshorteners.txt");
-        String curr = null;
-
-        for (String urlshortener : urlshorteners) {
-            if (shorturl.contains(urlshortener)) {
-                curr = reverseShortenedURL(shorturl);
-                System.out.println(curr);
+    public URL expand (URL shorturl) {
+        HttpURLConnection connection = null;
+        try {
+            connection = (HttpURLConnection) shorturl.openConnection();
+            connection.setInstanceFollowRedirects(false);
+            connection.connect();
+            String expanded = connection.getHeaderField("Location");
+            if (expanded != null) {
+                if (connection.getResponseCode() == 301) {
+                    URL expandedURL = new URL(expanded);
+                    return expand(expandedURL);
+                }
+                else {
+                    URL expandedURL = new URL(expanded);
+                    return expandedURL;
+                }
             }
         }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
+        return shorturl;
     }
 
     public void stringToFile(ArrayList<String> strings, String filename) {
@@ -138,8 +143,5 @@ public class Utilities {
 
     public static void main(String[] args) throws Exception {
         Utilities utilities = new Utilities();
-//        utilities.reverseShortenedURL("http://t.co/aEaSAMm9Hw");
-//        utilities.reverseShortenedURL("http://t.co/v4kkFGWQ3Q");
-        utilities.newReverser("http://t.co/aEaSAMm9Hw");
     }
 }
