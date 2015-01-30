@@ -74,7 +74,7 @@ public class Utilities {
         return fileToArray("nonbotlist.txt");
     }
 
-    public URL expand (URL shorturl) {
+    public URL expand(URL shorturl) {
         HttpURLConnection connection = null;
         try {
             connection = (HttpURLConnection) shorturl.openConnection();
@@ -138,6 +138,18 @@ public class Utilities {
         }
 
         return fileContents;
+    }
+
+    public void writeToExistingFile(String text, String file) {
+        try {
+            String filename = file;
+            FileWriter fw = new FileWriter(filename, true);
+            fw.write(text + "\n");
+            fw.close();
+        }
+        catch(IOException e) {
+            System.err.println("IOException: " + e.getMessage());
+        }
     }
 
 
