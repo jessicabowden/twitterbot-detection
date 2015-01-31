@@ -8,14 +8,14 @@ import java.util.*;
  * Created by Jessica on 19/11/2014.
  */
 public class FeatureTestingClass {
-    GetTweetsByUser getTweetsByUser = new GetTweetsByUser();
+    GetTweetObjects tweetObjects = new GetTweetObjects();
     Utilities utilities = new Utilities();
     MapUtils mapUtils = new MapUtils();
 
     public int numberOfRetweetsForUser(String user) {
         //we want to go to the user's profile
         //and analyse if a large portion of their tweets are retweets
-        ResponseList<Status> tweets = getTweetsByUser.getTweetsFromUser(1000, user);
+        ResponseList<Status> tweets = tweetObjects.getTweetsFromUser(1000, user);
 
         int count = 0;
         for (Status status : tweets) {
@@ -27,7 +27,7 @@ public class FeatureTestingClass {
     }
 
     public int numberOfLinksByUser(String user) {
-        ResponseList<Status> tweets = getTweetsByUser.getTweetsFromUser(1000, user);
+        ResponseList<Status> tweets = tweetObjects.getTweetsFromUser(1000, user);
 
         int urlCount = 0;
 
@@ -44,7 +44,7 @@ public class FeatureTestingClass {
     }
 
     public ArrayList<String> listOfLinksFromUser(String user)  {
-        ResponseList<Status> tweets = getTweetsByUser.getTweetsFromUser(100, user);
+        ResponseList<Status> tweets = tweetObjects.getTweetsFromUser(100, user);
         ArrayList<String> urllist = Lists.newArrayList();
 
         for (Status status : tweets) {
@@ -93,14 +93,12 @@ public class FeatureTestingClass {
     }
 
     public ArrayList<String> mostPopularLocation(String user) {
-        ResponseList<Status> tweets = getTweetsByUser.getTweetsFromUser(100, user);
-        SortedMap<String, Integer> tweetOrigins = Maps.newTreeMap();
-        ArrayList<String> topSources = Lists.newArrayList();
+        ResponseList<Status> tweets = tweetObjects.getTweetsFromUser(100, user);
+        HashMap<String, Integer> tweetOrigins = Maps.newHashMap();
 
         for (Status status : tweets) {
             String tweetOrigin = utilities.extractTextFromSource(status.getSource());
             if (tweetOrigins.containsKey(tweetOrigin)) {
-//                tweetOrigins.replace(tweetOrigin, tweetOrigins.get(tweetOrigin) + 1);
                 tweetOrigins.put(tweetOrigin, tweetOrigins.get(tweetOrigin) + 1);
             }
             else {
@@ -108,31 +106,14 @@ public class FeatureTestingClass {
             }
         }
 
-        if (tweetOrigins.size() < 3) {
-            topSources.add(tweetOrigins.firstKey());
-        }
-        else if (tweetOrigins.size() <2) {
-            int i = 1;
-            while (i < 2) {
-                topSources.add(tweetOrigins.lastKey());
-                tweetOrigins.remove(tweetOrigins.lastKey());
-                i++;
-            }
-        }
-        else {
-            int i = 1;
-            while (i < 3) {
-                topSources.add(tweetOrigins.lastKey());
-                tweetOrigins.remove(tweetOrigins.lastKey());
-                i++;
-            }
-        }
+        ArrayList<String> sortedSources = mapUtils.sortedMap(tweetOrigins);
+        ArrayList<String> topSources = mapUtils.getTopList(sortedSources, 3);
 
         return topSources;
     }
 
     public ArrayList<Integer> followersToFollowing(String username) {
-        twitter4j.User u = getTweetsByUser.getUserObject(username);
+        twitter4j.User u = tweetObjects.getUserObject(username);
         Integer followers = u.getFollowersCount();
         Integer following = u.getFriendsCount();
         ArrayList<Integer> ratio = Lists.newArrayList();
@@ -141,12 +122,25 @@ public class FeatureTestingClass {
         return ratio;
     }
 
-    public void tweetsWithEmoticons(String user) {
-        //Use class EmojiTest
+    public ArrayList<String> tweetsWithEmoticons(String user) {
+        EmojiFinder emojiTest = new EmojiFinder();
+        ResponseList<Status> tweets = tweetObjects.getTweetsFromUser(100, user);
+        ArrayList<String> tweetsWithEmoticons = Lists.newArrayList();
+
+        for (Status status : tweets) {
+            String text = status.getText();
+            //not sure if test is correct
+            if ((emojiTest.findEmojiTweets(text)) != null) {
+                tweetsWithEmoticons.add(text);
+            }
+        }
+
+        return tweetsWithEmoticons;
+
     }
 
     public ArrayList<Date> getFrequency(String user) {
-        ResponseList<Status> tweets = getTweetsByUser.getTweetsFromUser(10, user);
+        ResponseList<Status> tweets = tweetObjects.getTweetsFromUser(10, user);
         ArrayList<Date> dates = Lists.newArrayList();
 
         for (Status status : tweets) {
@@ -158,13 +152,13 @@ public class FeatureTestingClass {
     }
 
     public ArrayList<String> topTenWords(String user) {
-        ResponseList<Status> tweets = getTweetsByUser.getTweetsFromUser(10, user);
+        ResponseList<Status> tweets = tweetObjects.getTweetsFromUser(100, user);
+        HashMap<String, Integer> topWords = Maps.newHashMap();
 
         for (Status status : tweets) {
             String text = status.getText();
             String[] indWords = text.split(" ");
 
-            HashMap<String, Integer> topWords = Maps.newHashMap();
             for (String word : indWords) {
                 if (topWords.containsKey(word)) {
                     topWords.put(word, topWords.get(word) + 1);
@@ -172,7 +166,6 @@ public class FeatureTestingClass {
                     topWords.put(word, 1);
                 }
             }
-
         }
 
         ArrayList<String> sortedWords = mapUtils.sortedMap(topWords);
@@ -180,6 +173,39 @@ public class FeatureTestingClass {
 
         return topList;
 
+    }
+
+    public int tweetSimilarity(String user) {
+        ResponseList<Status> tweets = tweetObjects.getTweetsFromUser(100, user);
+        int matches = 0;
+
+        for (Status statusOne : tweets) {
+            for (Status statusTwo : tweets) {
+                if (statusOne.getText().equals(statusTwo.getText())) {
+                    matches++;
+                }
+            }
+        }
+
+        return matches;
+    }
+
+    public void conversationFlow(String user) {
+        ResponseList<Status> tweets = tweetObjects.getTweetsFromUser(100, user);
+
+        for (Status status : tweets) {
+            //check may not be correct
+            if (status.getInReplyToStatusId() != -1) {
+                long respondingTo = status.getInReplyToStatusId();
+                Status statusResponse = tweetObjects.getStatusFromId(respondingTo);
+                if (statusResponse.getInReplyToStatusId() != -1) {
+                    //this is likely a conversation thread
+                    //rather than someone just blindly replying
+                }
+            }
+        }
+
+        //not sure how it's best to return this at the moment
     }
 
     public static void main(String[] args) throws InterruptedException {
@@ -191,8 +217,6 @@ public class FeatureTestingClass {
 
         ArrayList<String> botinfo = Lists.newArrayList();
         ArrayList<String> nonbotinfo = Lists.newArrayList();
-
-        System.out.println(featureTestingClass.getFrequency("MbowdenJessica"));
 
 //        for (String nonbot : nonbots) {
 //            nonbotinfo.add(nonbot);
@@ -207,10 +231,6 @@ public class FeatureTestingClass {
 //            botinfo.add("\n");
 //        }
 //        utilities1.stringToFile(botinfo, "botinfo.txt");
-
-
-
-        //emoji char: ?
 
     }
 }

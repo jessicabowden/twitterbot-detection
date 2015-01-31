@@ -17,6 +17,14 @@ import java.util.StringTokenizer;
 public class Utilities {
     ArrayList<String> urls = Lists.newArrayList();
 
+    public ArrayList<String> sampleBots() {
+        return fileToArray("botlist.txt");
+    }
+
+    public ArrayList<String> sampleNonBots() {
+        return fileToArray("nonbotlist.txt");
+    }
+
     public String extractTextFromSource(String text) {
         StringBuilder stringBuilder = new StringBuilder();
 
@@ -64,14 +72,6 @@ public class Utilities {
         }
 
         return uri.getHost();
-    }
-
-    public ArrayList<String> sampleBots() {
-        return fileToArray("botlist.txt");
-    }
-
-    public ArrayList<String> sampleNonBots() {
-        return fileToArray("nonbotlist.txt");
     }
 
     public URL expand(URL shorturl) {
