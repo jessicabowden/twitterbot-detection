@@ -1,7 +1,12 @@
-import com.google.common.collect.Lists;
-import twitter4j.*;
 import java.util.ArrayList;
-import java.util.Map;
+
+import com.google.common.collect.Lists;
+import twitter4j.StallWarning;
+import twitter4j.Status;
+import twitter4j.StatusDeletionNotice;
+import twitter4j.StatusListener;
+import twitter4j.TwitterStream;
+import twitter4j.TwitterStreamFactory;
 
 /**
  * Created by Jessica on 18/11/2014.

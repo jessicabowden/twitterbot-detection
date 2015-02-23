@@ -6,7 +6,14 @@
 
     <groupId>ac.sussex.project</groupId>
     <artifactId>twitterbot-detection</artifactId>
+    <packaging>pom</packaging>
     <version>1.0-SNAPSHOT</version>
+    <modules>
+        <module>database</module>
+        <module>classification</module>
+        <module>utilities</module>
+        <module>twitter-handler</module>
+    </modules>
 
     <dependencies>
         <dependency>
@@ -53,6 +60,11 @@
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
             <version>3.1</version>
+        </dependency>
+        <dependency>
+            <groupId>ac.sussex.project</groupId>
+            <artifactId>utilities</artifactId>
+            <version>1.0-SNAPSHOT</version>
         </dependency>
 
     </dependencies>
