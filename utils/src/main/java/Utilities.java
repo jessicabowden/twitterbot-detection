@@ -100,4 +100,31 @@ public class Utilities {
         return fileToArray("stopwords.txt");
     }
 
+    public static void main(String[] args) {
+        File file = new File("tweets.txt");
+        BufferedReader reader = null;
+        String curr = null;
+
+        try {
+            reader = new BufferedReader(new FileReader(file));
+        }
+        catch (FileNotFoundException e) {
+            System.out.println("Can't find file ");
+        }
+
+        try {
+            while ((curr = reader.readLine())!= null) {
+                if (curr.equals("\n")) {
+                    System.out.println("found blank line");
+                }
+                else if (curr.equals("bot") || curr.equals("human")) {
+                    System.out.println(curr);
+                }
+            }
+        }
+        catch (IOException e) {
+            System.out.println("Can't read from file ");
+        }
+    }
+
 }

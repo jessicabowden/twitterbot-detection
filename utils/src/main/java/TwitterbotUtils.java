@@ -40,7 +40,12 @@ public class TwitterbotUtils {
         try {
             connection = (HttpURLConnection) shorturl.openConnection();
             connection.setInstanceFollowRedirects(false);
+            connection.setConnectTimeout(5000);
+            connection.setReadTimeout(5000);
+
             connection.connect();
+
+
             String expanded = connection.getHeaderField("Location");
             if (expanded != null) {
                 if (connection.getResponseCode() == 301) {
@@ -56,6 +61,7 @@ public class TwitterbotUtils {
         catch (IOException e) {
             e.printStackTrace();
         }
+
         return shorturl;
     }
 

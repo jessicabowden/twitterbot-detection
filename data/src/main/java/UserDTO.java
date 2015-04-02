@@ -25,7 +25,7 @@ public class UserDTO {
 
         try {
             userDTO.setUsername(jsonObject.get("screen_name").toString());
-            userDTO.setUser_id(jsonObject.getInt("id"));
+            userDTO.setUser_id(jsonObject.getLong("id"));
             userDTO.setVerified(jsonObject.getBoolean("verified"));
             userDTO.setBotStatus(type);
             userDTO.setFriendCount(jsonObject.getInt("friends_count"));

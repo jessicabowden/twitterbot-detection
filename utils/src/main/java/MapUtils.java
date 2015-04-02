@@ -54,7 +54,11 @@ public class MapUtils {
         map.put("f", 5);
         map.put("j", 0);
 
+        // l, z, f, b, j
+
         ArrayList<String> list = mapTest.sortedMap(map);
+        System.out.println(list);
+        System.out.println(mapTest.getTopList(list, 3));
 //        System.out.println(mapTest.getTopList(list));
 
     }

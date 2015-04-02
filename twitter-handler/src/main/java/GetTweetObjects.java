@@ -18,33 +18,18 @@ import twitter4j.json.DataObjectFactory;
 public class GetTweetObjects {
     Twitter twitter = new TwitterFactory().getInstance();
 
-    public ArrayList<JSONObject> getTweetsFromUser(int numberOfTweets, String username) {
+    public ArrayList<JSONObject> getOneThousandTweets(String username) {
         ArrayList<JSONObject> tweets = Lists.newArrayList();
 
         if (!(checkIfUserSuspended(username))) {
-            int pagingsRequired = numberOfTweets / 100;
+            int pagesRequired = 10;
             int i = 1;
 
-            if (pagingsRequired >= 100) {
-                while (i <= pagingsRequired) {
-                    Paging currPager = new Paging(i, 100);
-                    ResponseList<Status> current;
-                    try {
-                        current = twitter.getUserTimeline(username, currPager);
-                        for (Status status : current) {
-                            String rawJSON = DataObjectFactory.getRawJSON(status);
-                            JSONObject tweetAsObj = new JSONObject(rawJSON);
-                            tweets.add(tweetAsObj);
-                        }
-                    } catch (TwitterException e) {
-                        e.printStackTrace();
-                    }
-                    i++;
-                }
-            } else {
+            while (i <= pagesRequired) {
+                Paging currPager = new Paging(i, 100);
                 ResponseList<Status> current;
                 try {
-                    current = twitter.getUserTimeline(username);
+                    current = twitter.getUserTimeline(username, currPager);
                     for (Status status : current) {
                         String rawJSON = DataObjectFactory.getRawJSON(status);
                         JSONObject tweetAsObj = new JSONObject(rawJSON);
@@ -53,11 +38,12 @@ public class GetTweetObjects {
                 } catch (TwitterException e) {
                     e.printStackTrace();
                 }
+                i++;
             }
         }
-
         return tweets;
     }
+
 
     public User getUserObject(String username) {
         User user = null;
@@ -98,21 +84,93 @@ public class GetTweetObjects {
         return false;
     }
 
+    public Status getTweet(long tweetId) {
+        Status status = null;
+
+        try {
+            status = twitter.showStatus(tweetId);
+        } catch (TwitterException e) {
+            e.printStackTrace();
+        }
+
+        return status;
+    }
+
+    public void test() {
+        Paging pg = new Paging();
+        String userName = "ionlyretweetok";
+
+            int numberOfTweets = 100;
+            long lastID = Long.MAX_VALUE;
+            ArrayList<Status> tweets = new ArrayList<Status>();
+            while (tweets.size () < numberOfTweets) {
+                try {
+                    tweets.addAll(twitter.getUserTimeline(userName,pg));
+                    System.out.println(("Gathered " + tweets.size() + " tweets"));
+                    for (Status t: tweets)
+                        if(t.getId() < lastID) lastID = t.getId();
+                }
+                catch (TwitterException te) {
+                    System.out.println("Couldn't connect: " + te);
+                }
+                pg.setMaxId(lastID-1);
+            }
+    }
+
     public static void main(String[] args) {
         GetTweetObjects getTweetObjects = new GetTweetObjects();
+        TwitterbotUtils twitterbotUtils = new TwitterbotUtils();
+        Utilities utilities = new Utilities();
 
-        String suspendedUser = "iqegolubileje22";
-        String nonSuspended = "jessicambowden";
+        ArrayList<JSONObject> tweets = getTweetObjects.getOneThousandTweets("ionlyretweetok");
+        System.out.println(tweets.size());
 
-        ArrayList<String> users = Lists.newArrayList();
-        users.add(suspendedUser);
-        users.add(nonSuspended);
+        //        ArrayList<String> bots = utilities.fileToArray("botlist.txt");
+//        ArrayList<String> nonbots = utilities.fileToArray("nonbotlist.txt");
+//
+//        for (String bot : bots) {
+//            ArrayList<JSONObject> currentTweets = getTweetObjects.getOneThousandTweets(10, bot);
+//            for (JSONObject currentTweet : currentTweets) {
+//                String status = currentTweet.getString("text");
+//                System.out.println(status);
+//                if (status.contains("\n")) {
+//                    status = status.replace("\n", " ");
+//                }
+//                utilities.writeToExistingFile("bot " + status, "tweets.txt");
+//            }
+//        }
+//
+//        for (String nonbot : nonbots) {
+//            ArrayList<JSONObject> currentTweets = getTweetObjects.getOneThousandTweets(10, nonbot);
+//            for (JSONObject currentTweet : currentTweets) {
+//                String status = currentTweet.getString("text");
+//                System.out.println(status);
+//                if (status.contains("\n")) {
+//                    status = status.replace("\n", " ");
+//                }
+//                utilities.writeToExistingFile("human " + status, "tweets.txt");
+//            }
+//        }
 
-//        System.out.println(getTweetObjects.checkIfUserSuspended(nonSuspended));
+//        String user = "The4BG";
+//        String user2 = "ionlyretweetok";
+//        String user3 = "whitingnetluke";
+//        try {
+//            ArrayList<JSONObject> tweets = getTweetObjects.testMethod(1000, user2);
+//            System.out.println(tweets.size());
+//        }
+//        catch (TwitterException e) {
+//            e.printStackTrace();
+//        }
+//
+//        Twitter twitter = new TwitterFactory().getInstance();
 
-        for (String user : users) {
-            System.out.println(user + getTweetObjects.checkIfUserSuspended(user));
-        }
+//
+//                try {
+//            System.out.println(twitter.showStatus(574952460038586368L).getInReplyToUserId());
+//        } catch (TwitterException e) {
+//            e.printStackTrace();
+//        }
 
     }
 }

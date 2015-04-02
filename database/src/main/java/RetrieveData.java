@@ -7,8 +7,8 @@ import java.util.ArrayList;
 import com.google.common.collect.Lists;
 
 /**
- * Created by Jessica on 05/02/2015.
- */
+* Created by Jessica on 05/02/2015.
+*/
 public class RetrieveData {
     CreateConnection createConnection = new CreateConnection();
     Statement statement;
@@ -114,7 +114,7 @@ public class RetrieveData {
     }
 
     public Long getUserId(String screenname) {
-        String sql = "SELECT user_id FROM user WHERE screenname = ?";
+        String sql = "SELECT user_id FROM user WHERE screen_name = ?";
         ResultSet resultSet;
 
         try {
@@ -134,6 +134,32 @@ public class RetrieveData {
         }
 
         return null;
+    }
+
+    public ArrayList<Long> getFriendsAndFollowers(Long userID) {
+        String sql = "SELECT friend_count, follower_count FROM user WHERE user_id = ?";
+        ResultSet resultSet;
+
+        ArrayList<Long> results = Lists.newArrayList();
+
+        try {
+            PreparedStatement preparedStatement = createConnection.prepStatement(sql);
+            preparedStatement.setLong(1, userID);
+            resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()) {
+                results.add(resultSet.getLong("follower_count"));
+                results.add(resultSet.getLong("friend_count"));
+            }
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+        }
+        finally {
+            createConnection.close();
+        }
+
+        return results;
     }
 
     protected boolean checkForUser(long userId)  {
@@ -199,9 +225,27 @@ public class RetrieveData {
         catch (SQLException e) {
             System.out.println("Couldn't execute query " + e);
         }
-        finally {
-            createConnection.close();
+//        finally {
+//            createConnection.close();
+//        }
+
+        return null;
+    }
+
+    protected Integer queryForCountTemp(String query) {
+        ResultSet resultSet;
+        try {
+            resultSet = statement.executeQuery(query);
+            if (resultSet.next()) {
+                return resultSet.getInt("COUNT(hashtag)");
+            }
         }
+        catch (SQLException e) {
+            System.out.println("Couldn't execute query " + e);
+        }
+        //        finally {
+        //            createConnection.close();
+        //        }
 
         return null;
     }

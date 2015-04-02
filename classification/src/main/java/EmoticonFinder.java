@@ -1,18 +1,32 @@
-import com.google.common.collect.Lists;
-import twitter4j.ResponseList;
-import twitter4j.Status;
-
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import com.google.common.collect.Lists;
+
 /**
- * Created by Jessica on 29/01/2015.
+ * Created by Jessica on 21/03/2015.
  */
-public class EmojiFinder {
-    public ArrayList<String> findEmojiTweets(String original) {
+public class EmoticonFinder {
+    RetrieveData retrieveData = new RetrieveData();
+
+    public ArrayList<String> emoticons(Long userId) {
+        ArrayList<String> tweets = retrieveData.getTweets(userId);
+
+        ArrayList<String> tweetsWithEmoticons = Lists.newArrayList();
+
+        for (String tweet : tweets) {
+            if (findEmojiTweets(tweet) != null) {
+                tweetsWithEmoticons.add(tweet);
+            }
+        }
+
+        return tweetsWithEmoticons;
+    }
+
+    private ArrayList<String> findEmojiTweets(String original) {
         ArrayList<String> emojiTweets = Lists.newArrayList();
         String regexPattern = "[\uD83C-\uDBFF\uDC00-\uDFFF]+";
         byte[] utf8 = new byte[0];
@@ -39,23 +53,5 @@ public class EmojiFinder {
         }
 
         return emojiTweets;
-    }
-
-    public static void main(String[] args)  {
-//        GetTweetObjects getTweetsByUser = new GetTweetObjects();
-//        EmojiFinder emojiTest = new EmojiFinder();
-//
-//        ArrayList<Status> tweets = getTweetsByUser.getTweetsFromUser(10, "MbowdenJessica");
-//        ArrayList<String> posts = Lists.newArrayList();
-//
-//        for (Status status : tweets) {
-//            String text = status.getText();
-//            posts.add(text);
-//        }
-//
-//        System.out.println("Emoji tweets:");
-//        for (String post : posts) {
-//            emojiTest.findEmojiTweets(post);
-//        }
     }
 }

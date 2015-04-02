@@ -45,12 +45,16 @@ public class TweetDTO {
             tweetDTO.setFavouriteCount(jsonObject.getInt("favorite_count"));
 
             if (!(jsonObject.get("in_reply_to_user_id").equals(null))) {
-                //check this works as expected
                 tweetDTO.setReplyTo(jsonObject.getLong("in_reply_to_user_id"));
             }
 
-            tweetDTO.setRetweet(jsonObject.getBoolean("retweeted"));
-//            tweetDTO.setTweeters_id(userDTO.getUser_id());
+
+            if(jsonObject.has("retweeted_status")) {
+                tweetDTO.setRetweet(true);
+            }
+            else {
+                tweetDTO.setRetweet(false);
+            }
 
             tweetDTO.setTweet_id(jsonObject.getLong("id"));
             tweetDTO.setTruncated(jsonObject.getBoolean("truncated"));

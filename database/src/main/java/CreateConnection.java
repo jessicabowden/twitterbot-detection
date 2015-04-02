@@ -1,8 +1,8 @@
 import java.sql.*;
 
 /**
- * Created by Jessica on 05/02/2015.
- */
+* Created by Jessica on 05/02/2015.
+*/
 public class CreateConnection {
     Connection connection = null;
     Statement statement;

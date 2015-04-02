@@ -22,13 +22,18 @@ public class UrlDTO {
         else {
             url = newUrl;
         }
-
         try {
             URL shortUrl = new URL(url);
             url = shortUrl.toString();
+
             System.out.println(url);
+
             expandedUrl = twitterbotUtils.expand(shortUrl).toString();
+
+            System.out.println(twitterbotUtils.expand(shortUrl));
+
             System.out.println(expandedUrl);
+
             domain = TwitterbotUtils.getBaseURL(expandedUrl);
             System.out.println(domain);
         }
@@ -78,7 +83,8 @@ public class UrlDTO {
     }
 
     public static void main(String[] args) {
-        String s = new String("http://bit.ly/1o00xRY");
+        String s = new String("http://www.capwiz.com/compassionindex/issues/alert/?alertid=62658651#.UZYdRCSzdnE.twitter");
+        String working = new String("http://t.co/5UCsLP7hyS");
         UrlDTO urlDTO = new UrlDTO(s);
     }
 }

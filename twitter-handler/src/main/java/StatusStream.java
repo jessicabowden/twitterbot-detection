@@ -21,13 +21,13 @@ public class StatusStream {
         final StatusListener statusListener = new StatusListener() {
             @Override
             public void onStatus(Status status) {
-                if (statuses.size() >= 10) {
+                if (statuses.size() >= 50) {
                     synchronized (lock) {
                         lock.notify();
                     }
                 }
                 else {
-                    if (status.getIsoLanguageCode().equals("en")) {
+                    if (status.getLang().equals("en")) {
                         statuses.add(status);
                     }
                 }
@@ -78,6 +78,21 @@ public class StatusStream {
     public ArrayList<Status> getStatuses() {
         fetchStatuses();
         return statuses;
+    }
+
+    public static void main(String[] args) throws InterruptedException {
+        StatusStream statusStream = new StatusStream();
+        ArrayList<Status> statuses = statusStream.getStatuses();
+        Thread.sleep(50000);
+
+        ArrayList<String> usernames = Lists.newArrayList();
+
+        for (Status status : statuses) {
+            String screenname = status.getUser().getScreenName();
+            System.out.println(screenname);
+            usernames.add(screenname + "\n");
+        }
+
     }
 
 
