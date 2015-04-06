@@ -122,55 +122,7 @@ public class GetTweetObjects {
         TwitterbotUtils twitterbotUtils = new TwitterbotUtils();
         Utilities utilities = new Utilities();
 
-        ArrayList<JSONObject> tweets = getTweetObjects.getOneThousandTweets("ionlyretweetok");
-        System.out.println(tweets.size());
-
-        //        ArrayList<String> bots = utilities.fileToArray("botlist.txt");
-//        ArrayList<String> nonbots = utilities.fileToArray("nonbotlist.txt");
-//
-//        for (String bot : bots) {
-//            ArrayList<JSONObject> currentTweets = getTweetObjects.getOneThousandTweets(10, bot);
-//            for (JSONObject currentTweet : currentTweets) {
-//                String status = currentTweet.getString("text");
-//                System.out.println(status);
-//                if (status.contains("\n")) {
-//                    status = status.replace("\n", " ");
-//                }
-//                utilities.writeToExistingFile("bot " + status, "tweets.txt");
-//            }
-//        }
-//
-//        for (String nonbot : nonbots) {
-//            ArrayList<JSONObject> currentTweets = getTweetObjects.getOneThousandTweets(10, nonbot);
-//            for (JSONObject currentTweet : currentTweets) {
-//                String status = currentTweet.getString("text");
-//                System.out.println(status);
-//                if (status.contains("\n")) {
-//                    status = status.replace("\n", " ");
-//                }
-//                utilities.writeToExistingFile("human " + status, "tweets.txt");
-//            }
-//        }
-
-//        String user = "The4BG";
-//        String user2 = "ionlyretweetok";
-//        String user3 = "whitingnetluke";
-//        try {
-//            ArrayList<JSONObject> tweets = getTweetObjects.testMethod(1000, user2);
-//            System.out.println(tweets.size());
-//        }
-//        catch (TwitterException e) {
-//            e.printStackTrace();
-//        }
-//
-//        Twitter twitter = new TwitterFactory().getInstance();
-
-//
-//                try {
-//            System.out.println(twitter.showStatus(574952460038586368L).getInReplyToUserId());
-//        } catch (TwitterException e) {
-//            e.printStackTrace();
-//        }
+        System.out.println(getTweetObjects.getTweet(583987735528083457L));
 
     }
 }

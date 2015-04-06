@@ -24,4 +24,11 @@ public class TweetTypeCounter {
         Integer hashtags = retrieveData.queryForCount(sql);
         return hashtags;
     }
+
+    public Integer numberOfTweets(Long userId) {
+        String sql = "select count(1) from tweet where tweet.tweeters_id = " + userId;
+
+        Integer tweets = retrieveData.queryForCount(sql);
+        return tweets;
+    }
 }

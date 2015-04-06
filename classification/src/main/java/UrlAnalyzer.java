@@ -39,12 +39,12 @@ public class UrlAnalyzer {
         return urls;
     }
 
-    public void mostCommonDomain(Long userId) {
+    public String mostCommonDomain(Long userId) {
         String sql = "SELECT DISTINCT domain, COUNT(domain), tweeters_id "
                 + "FROM tweet, url WHERE tweet.tweet_id = url.tweet_id AND tweet.tweeters_id = ? "
                 + "GROUP BY domain ORDER BY COUNT(domain) DESC LIMIT 1";
 
-        ArrayList<String> domains = Lists.newArrayList();
+        String domain = "";
 
         ResultSet resultSet;
 
@@ -54,31 +54,7 @@ public class UrlAnalyzer {
             resultSet = preparedStatement.executeQuery();
 
             while (resultSet.next()) {
-                domains.add(resultSet.getString("domain"));
-            }
-        }
-        catch (SQLException e) {
-            e.printStackTrace();
-        }
-        finally {
-            connection.close();
-        }
-    }
-
-    //this doesn't really belong in url analyzer!
-    public String mostCommonSource(Long userId) {
-        String sql = "SELECT source, COUNT(source) FROM tweet WHERE tweeters_id = ? GROUP BY source ORDER BY COUNT(source) DESC LIMIT 1";
-
-        String source = "";
-        ResultSet resultSet;
-
-        try {
-            PreparedStatement preparedStatement = connection.prepStatement(sql);
-            preparedStatement.setLong(1, userId);
-            resultSet = preparedStatement.executeQuery();
-
-            while (resultSet.next()) {
-                source = resultSet.getString("source");
+                domain = resultSet.getString("domain");
             }
         }
         catch (SQLException e) {
@@ -88,6 +64,6 @@ public class UrlAnalyzer {
             connection.close();
         }
 
-        return source;
+        return domain;
     }
 }

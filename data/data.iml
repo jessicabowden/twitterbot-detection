@@ -23,5 +23,7 @@
     <orderEntry type="library" name="Maven: org.apache.commons:commons-lang3:3.1" level="project" />
     <orderEntry type="library" name="Maven: joda-time:joda-time:2.7" level="project" />
     <orderEntry type="library" name="Maven: org.apache.commons:commons-math3:3.2" level="project" />
+    <orderEntry type="library" name="Maven: com.vdurmont:emoji-java:1.1.0" level="project" />
+    <orderEntry type="library" name="Maven: org.webjars:google-diff-match-patch:20121119-1" level="project" />
   </component>
 </module>

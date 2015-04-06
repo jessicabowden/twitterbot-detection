@@ -290,4 +290,23 @@ public class RetrieveData {
 
         return userDTO;
     }
+
+    public void checkForUser(String username) {
+        String sql = "SELECT COUNT(1) FROM user WHERE screen_name = '" + username + "'";
+
+        if (queryForCount(sql) == 0) {
+            System.out.println(username);
+        }
+    }
+
+    public static void main(String[] args) {
+        //read in humansTest.txt
+        RetrieveData retrieveData = new RetrieveData();
+        Utilities utilities = new Utilities();
+        ArrayList<String> bots = utilities.fileToArray("botsTest.txt");
+
+        for (String bot : bots) {
+            retrieveData.checkForUser(bot);
+        }
+    }
 }

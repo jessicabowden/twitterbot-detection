@@ -3,11 +3,11 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 
 import org.apache.commons.math3.stat.descriptive.moment.StandardDeviation;
 import org.joda.time.DateTime;
+import org.joda.time.DateTimeZone;
 import org.joda.time.Duration;
 import org.joda.time.Interval;
 import org.joda.time.LocalTime;
@@ -66,11 +66,14 @@ public class LongitudinalTweetBehaviour {
         ArrayList<Timestamp> dates = getTweetDates(userId);
 
         ArrayList<DateTime> dateTimes = getAsJodaDatetime(userId);
+        System.out.println(dateTimes.size());
 
         ArrayList<Interval> intervals = new ArrayList<Interval>();
 
-        for (int i = 0; i < dateTimes.size(); i++) {
-            Interval interval = new Interval(i, i+1);   // if there any issues it will be here
+        for (int i = 0; i < dateTimes.size() -1; i++) {
+            Interval interval = new Interval(dateTimes.get(i), dateTimes.get(i+1));
+//            System.out.println(interval.toDuration().getStandardHours());
+//            System.out.println(interval);
             intervals.add(interval);
         }
 
@@ -92,13 +95,14 @@ public class LongitudinalTweetBehaviour {
         //a std deviation of 0 is not sporadic at all
     public double getStdDeviationOfDurations(Long userId) {
         double[] durations = getIntervals(userId);
+//        System.out.println(durations.length);
         StandardDeviation standardDeviation = new StandardDeviation();
         double result = standardDeviation.evaluate(durations);
         return result;
     }
 
     //get time of tweet not including seconds
-    private ArrayList<String> getTimesFromTweets(Long userId) {
+    public ArrayList<String> getTimesFromTweets(Long userId) {
         ArrayList<DateTime> dates = getAsJodaDatetime(userId);
         ArrayList<LocalTime> times = Lists.newArrayList();
 
@@ -113,11 +117,11 @@ public class LongitudinalTweetBehaviour {
         HashMap<String, Integer> modes = Maps.newHashMap();
 
         for (LocalTime time : times) {
-            if (modes.get(time.toString()) != null) {
-                modes.put(time.toString(), 1);
+            if (modes.containsKey(time.toString())) {
+                modes.replace(time.toString(), modes.get(time.toString()) + 1);
             }
             else {
-                modes.replace(time.toString(), modes.get(time) + 1);
+                modes.put(time.toString(), 1);
             }
         }
 
@@ -127,9 +131,45 @@ public class LongitudinalTweetBehaviour {
         return trimode;
     }
 
+    public LocalTime averageTime(Long userId) {
+        ArrayList<DateTime> dates = getAsJodaDatetime(userId);
+        ArrayList<LocalTime> times = Lists.newArrayList();
+
+        for (DateTime dateTime : dates) {
+            LocalTime localTime = new LocalTime(dateTime);
+            localTime = localTime.minusMillis(localTime.getMillisOfSecond());
+            localTime = localTime.minusSeconds(localTime.getSecondOfMinute());
+            times.add(localTime);
+        }
+
+        long sum = 0;
+
+        for (int i = 0; i < times.size() - 1; i++) {
+            LocalTime currentTime = times.get(i);
+            LocalTime nextTime = times.get(i + 1);
+
+            DateTime currentDateTime = currentTime.toDateTimeToday(DateTimeZone.UTC);
+            long currentMillis = currentDateTime.getMillis();
+
+            DateTime nextDateTime = nextTime.toDateTimeToday(DateTimeZone.UTC);
+            long nextMillis = nextDateTime.getMillis();
+
+            long currentResult = currentMillis + nextMillis;
+
+            sum += currentResult;
+        }
+
+        long result = sum/times.size();
+        LocalTime localTime = new LocalTime(result, DateTimeZone.UTC);
+//        System.out.println(localTime);
+
+        return localTime;
+
+    }
+
 
     //get hour of tweet
-    private ArrayList<String> getHoursFromTweets(Long userId) {
+    public ArrayList<String> getHoursFromTweets(Long userId) {
         ArrayList<DateTime> dates = getAsJodaDatetime(userId);
 
         ArrayList<Integer> hours = Lists.newArrayList();
@@ -142,11 +182,11 @@ public class LongitudinalTweetBehaviour {
         HashMap<String, Integer> modes = Maps.newHashMap();
 
         for (Integer hour : hours) {
-            if (modes.get(hour.toString()) != null) {
-                modes.put(hour.toString(), 1);
+            if (modes.containsKey(hour.toString())) {
+                modes.replace(hour.toString(), modes.get(hour.toString()) + 1);
             }
             else {
-                modes.replace(hour.toString(), modes.get(hour) + 1);
+                modes.put(hour.toString(), 1);
             }
         }
 
@@ -154,25 +194,52 @@ public class LongitudinalTweetBehaviour {
         ArrayList<String> trimode = mapUtils.getTopList(sortedModes, 3);
 
         return trimode;
+    }
 
-        //store values and count in map to get trimode
+    public int getAvgHour(Long userId) {
+        ArrayList<DateTime> dates = getAsJodaDatetime(userId);
+        ArrayList<LocalTime> times = Lists.newArrayList();
+
+        for (DateTime dateTime : dates) {
+            LocalTime localTime = new LocalTime(dateTime);
+            localTime = localTime.minusMillis(localTime.getMillisOfSecond());
+            localTime = localTime.minusSeconds(localTime.getSecondOfMinute());
+            times.add(localTime);
+        }
+
+        long sum = 0;
+
+        for (int i = 0; i < times.size() - 1; i++) {
+            LocalTime currentTime = times.get(i);
+            LocalTime nextTime = times.get(i + 1);
+
+            DateTime currentDateTime = currentTime.toDateTimeToday(DateTimeZone.UTC);
+            long currentMillis = currentDateTime.getMillis();
+
+            DateTime nextDateTime = nextTime.toDateTimeToday(DateTimeZone.UTC);
+            long nextMillis = nextDateTime.getMillis();
+
+            long currentResult = currentMillis + nextMillis;
+
+            sum += currentResult;
+        }
+
+        long result = sum/times.size();
+        LocalTime localTime = new LocalTime(result, DateTimeZone.UTC);
+        //        System.out.println(localTime);
+
+        return localTime.getHourOfDay();
     }
 
     public static void main(String[] args) {
-        Date date = new Date();
+        LongitudinalTweetBehaviour longitude = new LongitudinalTweetBehaviour();
+        longitude.averageTime(17427004L);
 
-        DateTime dateTime = new DateTime(date);
+//        longitude.getIntervals(17427004L);
 
-        LocalTime localTime = new LocalTime(dateTime);
+//        System.out.println(longitude.getHoursFromTweets(17427004L));
 
-        System.out.println(localTime);
-
-        System.out.println(localTime.getMillisOfSecond());
-        System.out.println(localTime.getSecondOfMinute());
-
-        localTime = localTime.minusMillis(localTime.getMillisOfSecond());
-        localTime = localTime.minusSeconds(localTime.getSecondOfMinute());
-
-        System.out.println(localTime);
+//        System.out.println(longitude.getStdDeviationOfDurations(17427004L));
+//        System.out.println(longitude.getStdDeviationOfDurations(16335974L));
     }
 }

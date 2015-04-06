@@ -8,14 +8,29 @@ import java.util.ArrayList;
 public class FriendsToFollowersRatio {
     RetrieveData retrieveData = new RetrieveData();
 
-    public double getFriendshipRatio(Long userId) {
+//    public String predictedStatusFromRatio(Long userId) {
+//        double ratio = getFriendshipRatio(userId);
+//
+//        if (ratio <= 1.0) {
+//            return "bot";
+//        }
+//
+//        return "human";
+//    }
+
+    public Double getFriendshipRatio(Long userId) {
         ArrayList<Long> friendsAndFollowers = retrieveData.getFriendsAndFollowers(userId);
         return getRatio(friendsAndFollowers.get(0), friendsAndFollowers.get(1));
     }
 
     private double getRatio(double followers, double friends) {
+        if (friends == 0) {
+            return 0.00;
+        }
+
         double ratio = followers/friends;
-        double roundedRatio = round(ratio, 2);
+        Double roundedRatio = round(ratio, 2);
+
         return roundedRatio;
     }
 
@@ -24,15 +39,16 @@ public class FriendsToFollowersRatio {
 
         BigDecimal bd = new BigDecimal(value);
         bd = bd.setScale(places, RoundingMode.HALF_UP);
+
         return bd.doubleValue();
     }
 
-    private void ratioStatus(double ratio) {
-        if (ratio <= 1.0) {
-            System.out.println("possibly a bot");
-        }
-        else {
-            System.out.println("probably fine");
-        }
+    public static void main(String[] args) {
+        //Test
+        FriendsToFollowersRatio friendsToFollowersRatio = new FriendsToFollowersRatio();
+
+        Long userId = 2575207160L;
+
+        System.out.println(friendsToFollowersRatio.getFriendshipRatio(userId));
     }
 }

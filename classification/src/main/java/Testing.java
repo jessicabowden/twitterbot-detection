@@ -12,7 +12,7 @@ public class Testing {
     CreateConnection connection = new CreateConnection();
 
     public ArrayList<Long> gatherBots() {
-        String sql = "select user_id from user where is_bot = 'TRUE' limit 140";
+        String sql = "select user_id from user where is_bot = 'TRUE'";
 
         ArrayList<Long> bots = Lists.newArrayList();
 
@@ -37,7 +37,7 @@ public class Testing {
     }
 
     public ArrayList<Long> gatherHumans() {
-        String sql = "select user_id from user where is_bot = 'FALSE' limit 140";
+        String sql = "select user_id from user where is_bot = 'FALSE'";
 
         ArrayList<Long> humans = Lists.newArrayList();
 
