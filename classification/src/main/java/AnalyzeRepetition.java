@@ -7,6 +7,7 @@ import java.sql.SQLException;
  */
 public class AnalyzeRepetition {
     CreateConnection connection = new CreateConnection();
+    TweetTypeCounter typeCounter = new TweetTypeCounter();
 
     public Integer numberOfDuplicateHashtags(Long userId) {
         String sql = "SELECT SUM(cnt) AS total_duplicate_hashtags FROM (SELECT COUNT(hashtag) AS cnt, tweeters_id, hashtag "
@@ -21,7 +22,16 @@ public class AnalyzeRepetition {
             resultSet = preparedStatement.executeQuery();
 
             while (resultSet.next()) {
-                return resultSet.getInt("total_duplicate_hashtags");
+                Integer totalHashtags = typeCounter.numberOfHashtags(userId);
+                Integer totalDuplicates =  resultSet.getInt("total_duplicate_hashtags");
+
+                if (totalDuplicates > 0) {
+                    Integer percentage = (totalDuplicates * 100 / totalHashtags);
+                    return percentage;
+                }
+                else {
+                    return 0;
+                }
             }
         }
         catch (SQLException e) {
@@ -47,7 +57,19 @@ public class AnalyzeRepetition {
             resultSet = preparedStatement.executeQuery();
 
             while (resultSet.next()) {
-                return resultSet.getInt("total_duplicate_tweets");
+                Integer result =  resultSet.getInt("total_duplicate_tweets");
+                Integer totalTweets = typeCounter.numberOfTweets(userId);
+
+                if (totalTweets > 0) {
+                    Integer percentage = (result * 100 / totalTweets);
+
+                    System.out.println(percentage);
+
+                    return percentage;
+                }
+                else {
+                    return 0;
+                }
             }
         }
         catch (SQLException e) {

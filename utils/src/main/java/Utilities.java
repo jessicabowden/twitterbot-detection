@@ -96,6 +96,19 @@ public class Utilities {
         }
     }
 
+    public String removeStopWords (String sentence) {
+        String[] words = sentence.split(" ");
+        ArrayList<String> newWords = Lists.newArrayList();
+
+        for (int i = 0; i < words.length; i++) {
+            if (!isStopWord(words[i])) {
+                newWords.add(words[i]);
+            }
+        }
+
+        return newWords.toString();
+    }
+
     public boolean isStopWord(String word) {
         boolean isStopWord = false;
 

@@ -23,7 +23,7 @@ public class FriendsToFollowersRatio {
         return getRatio(friendsAndFollowers.get(0), friendsAndFollowers.get(1));
     }
 
-    private double getRatio(double followers, double friends) {
+    public double getRatio(double followers, double friends) {
         if (friends == 0) {
             return 0.00;
         }

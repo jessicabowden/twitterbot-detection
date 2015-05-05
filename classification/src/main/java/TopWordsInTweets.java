@@ -25,14 +25,13 @@ public class TopWordsInTweets {
         return topList;
     }
 
-    public ArrayList<String> topTenStopWords(Long userId) {
+    public HashMap<String, Integer> stopWordsMap(Long userId) {
         HashMap<String, Integer> topWords = topWords(userId);
         HashMap<String, Integer> newTopWords = Maps.newHashMap();
 
         Iterator it = topWords.entrySet().iterator();
 
         while (it.hasNext()) {
-            boolean isStopWord = false;
             Map.Entry<String, Integer> current = (Map.Entry) it.next();
             String currentWord = current.getKey();
 
@@ -40,6 +39,12 @@ public class TopWordsInTweets {
                 newTopWords.put(currentWord, current.getValue());
             }
         }
+
+        return newTopWords;
+    }
+
+    public ArrayList<String> topTenStopWords(Long userId) {
+        HashMap<String, Integer> newTopWords = stopWordsMap(userId);
 
         ArrayList<String> sorted = mapUtils.sortedMap(newTopWords);
 
@@ -50,14 +55,13 @@ public class TopWordsInTweets {
         return sorted;
     }
 
-    public ArrayList<String> topTenNonStopWords(Long userId) {
+    public HashMap<String, Integer> nonStopWordsMap(Long userId) {
         HashMap<String, Integer> topWords = topWords(userId);
         HashMap<String, Integer> newTopWords = Maps.newHashMap();
 
         Iterator it = topWords.entrySet().iterator();
 
         while (it.hasNext()) {
-            boolean isStopWord = false;
             Map.Entry<String, Integer> current = (Map.Entry) it.next();
             String currentWord = current.getKey();
 
@@ -65,6 +69,12 @@ public class TopWordsInTweets {
                 newTopWords.put(currentWord, current.getValue());
             }
         }
+
+        return newTopWords;
+    }
+
+    public ArrayList<String> topTenNonStopWords(Long userId) {
+        HashMap<String, Integer> newTopWords = nonStopWordsMap(userId);
 
         ArrayList<String> sorted = mapUtils.sortedMap(newTopWords);
 
@@ -95,6 +105,39 @@ public class TopWordsInTweets {
         return topWords;
     }
 
+    public String ratio(Long userId) {
+        Integer nonStopWord = 0;
+        Integer stopWord = 0;
+
+        HashMap<String, Integer> stopWords = nonStopWordsMap(userId);
+        HashMap<String, Integer> nonStopWords = stopWordsMap(userId);
+
+        Iterator stopIter = stopWords.entrySet().iterator();
+
+        while (stopIter.hasNext()) {
+            Map.Entry<String, Integer> current = (Map.Entry) stopIter.next();
+            if (current.getValue() > stopWord) {
+                stopWord = current.getValue();
+            }
+        }
+
+        Iterator nonStopIter = nonStopWords.entrySet().iterator();
+
+        while (nonStopIter.hasNext()) {
+            Map.Entry<String, Integer> current = (Map.Entry) nonStopIter.next();
+            if (current.getValue() > nonStopWord) {
+                nonStopWord = current.getValue();
+            }
+        }
+
+        FriendsToFollowersRatio f2f = new FriendsToFollowersRatio();
+        Double r = f2f.getRatio(new Double(nonStopWord), new Double(stopWord));
+
+        return r.toString();
+
+//        return nonStopWord.toString() + ":" + stopWord.toString();
+    }
+
     public static void main(String[] args) {
         //Test
 
@@ -102,7 +145,8 @@ public class TopWordsInTweets {
 
         Long user = 14304170L;
 
-        System.out.println(topWordsInTweets.topTenNonStopWords(user));
-        System.out.println(topWordsInTweets.topTenStopWords(user));
+//        System.out.println(topWordsInTweets.topTenNonStopWords(user));
+//        System.out.println(topWordsInTweets.topTenStopWords(user));
+        System.out.println(topWordsInTweets.ratio(user));
     }
 }

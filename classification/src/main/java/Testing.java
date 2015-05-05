@@ -61,6 +61,106 @@ public class Testing {
         return humans;
     }
 
+    public ArrayList<Long> gatherFirstHalfBots() {
+        String sql = "select user_id from user where is_bot = 'TRUE' LIMIT 200";
+
+        ArrayList<Long> bots = Lists.newArrayList();
+
+        ResultSet resultSet;
+
+        try {
+            PreparedStatement preparedStatement = connection.prepStatement(sql);
+            resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()) {
+                bots.add(resultSet.getLong("user_id"));
+            }
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+        }
+        finally {
+            connection.close();
+        }
+
+        return bots;
+    }
+
+    public ArrayList<Long> gatherFirstHalfHumans() {
+        String sql = "select user_id from user where is_bot = 'FALSE' LIMIT 238";
+
+        ArrayList<Long> humans = Lists.newArrayList();
+
+        ResultSet resultSet;
+
+        try {
+            PreparedStatement preparedStatement = connection.prepStatement(sql);
+            resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()) {
+                humans.add(resultSet.getLong("user_id"));
+            }
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+        }
+        finally {
+            connection.close();
+        }
+
+        return humans;
+    }
+
+    public ArrayList<Long> gatherBotsTesting() {
+        String sql = "select user_id from user where is_bot = 'TRUE' LIMIT 300 OFFSET 201";
+
+        ArrayList<Long> bots = Lists.newArrayList();
+
+        ResultSet resultSet;
+
+        try {
+            PreparedStatement preparedStatement = connection.prepStatement(sql);
+            resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()) {
+                bots.add(resultSet.getLong("user_id"));
+            }
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+        }
+        finally {
+            connection.close();
+        }
+
+        return bots;
+    }
+
+    public ArrayList<Long> gatherHumansTesting() {
+        String sql = "select user_id from user where is_bot = 'FALSE' LIMIT 300 OFFSET 239";
+
+        ArrayList<Long> humans = Lists.newArrayList();
+
+        ResultSet resultSet;
+
+        try {
+            PreparedStatement preparedStatement = connection.prepStatement(sql);
+            resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()) {
+                humans.add(resultSet.getLong("user_id"));
+            }
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+        }
+        finally {
+            connection.close();
+        }
+
+        return humans;
+    }
+
     public void duplicateTweets() {
         AnalyzeRepetition analyzeRepetition = new AnalyzeRepetition();
         RetrieveData retrieveData = new RetrieveData();

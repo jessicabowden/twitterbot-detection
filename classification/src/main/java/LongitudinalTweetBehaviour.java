@@ -2,6 +2,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -66,15 +67,19 @@ public class LongitudinalTweetBehaviour {
         ArrayList<Timestamp> dates = getTweetDates(userId);
 
         ArrayList<DateTime> dateTimes = getAsJodaDatetime(userId);
-        System.out.println(dateTimes.size());
 
         ArrayList<Interval> intervals = new ArrayList<Interval>();
 
         for (int i = 0; i < dateTimes.size() -1; i++) {
-            Interval interval = new Interval(dateTimes.get(i), dateTimes.get(i+1));
-//            System.out.println(interval.toDuration().getStandardHours());
-//            System.out.println(interval);
-            intervals.add(interval);
+            try {
+                Interval interval = new Interval(dateTimes.get(i), dateTimes.get(i + 1));
+                intervals.add(interval);
+            }
+            catch (Exception e) {
+//                System.out.println(i);
+//                System.out.println(dateTimes.get(i));
+//                System.out.println(dateTimes.get(i + 1));
+            }
         }
 
         double[] durations = new double[intervals.size()];
@@ -93,12 +98,18 @@ public class LongitudinalTweetBehaviour {
 
     //it shows us how sporadic their tweeting is (or not!)
         //a std deviation of 0 is not sporadic at all
-    public double getStdDeviationOfDurations(Long userId) {
+    public String getStdDeviationOfDurations(Long userId) {
         double[] durations = getIntervals(userId);
 //        System.out.println(durations.length);
         StandardDeviation standardDeviation = new StandardDeviation();
         double result = standardDeviation.evaluate(durations);
-        return result;
+        System.out.println(result);
+
+        DecimalFormat decimalFormat = new DecimalFormat();
+//        decimalFormat.setMaximumFractionDigits(340);
+        String res = decimalFormat.format(result);
+
+        return res;
     }
 
     //get time of tweet not including seconds
@@ -234,6 +245,10 @@ public class LongitudinalTweetBehaviour {
     public static void main(String[] args) {
         LongitudinalTweetBehaviour longitude = new LongitudinalTweetBehaviour();
         longitude.averageTime(17427004L);
+
+        Long user = new Long(602225568);
+
+        System.out.println(longitude.getStdDeviationOfDurations(user));
 
 //        longitude.getIntervals(17427004L);
 
