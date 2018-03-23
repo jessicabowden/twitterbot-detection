@@ -116,13 +116,4 @@ public class GetTweetObjects {
                 pg.setMaxId(lastID-1);
             }
     }
-
-    public static void main(String[] args) {
-        GetTweetObjects getTweetObjects = new GetTweetObjects();
-        TwitterbotUtils twitterbotUtils = new TwitterbotUtils();
-        Utilities utilities = new Utilities();
-
-        System.out.println(getTweetObjects.getTweet(583987735528083457L));
-
-    }
 }

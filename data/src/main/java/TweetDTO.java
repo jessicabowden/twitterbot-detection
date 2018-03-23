@@ -15,7 +15,6 @@ import com.google.common.collect.Lists;
 public class TweetDTO {
     long tweet_id;
     String status;
-//    long tweeters_id;
     boolean retweet;
     String source;
     Timestamp createdAt;
@@ -118,14 +117,6 @@ public class TweetDTO {
     public void setStatus(String status) {
         this.status = status;
     }
-
-//    public long getTweeters_id() {
-//        return tweeters_id;
-//    }
-//
-//    public void setTweeters_id(long tweeters_id) {
-//        this.tweeters_id = tweeters_id;
-//    }
 
     public boolean isRetweet() {
         return retweet;

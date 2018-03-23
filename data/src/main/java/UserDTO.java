@@ -233,11 +233,4 @@ public class UserDTO {
 
         return true;
     }
-
-    public static void main(String[] args) {
-        JSONObject jsonObject = new JSONObject("{\"utc_offset\":0,\"friends_count\":383,\"profile_image_url_https\":\"https://pbs.twimg.com/profile_images/522798955285868544/ebu0ovtQ_normal.jpeg\",\"listed_count\":1,\"profile_background_image_url\":\"http://abs.twimg.com/images/themes/theme2/bg.gif\",\"default_profile_image\":false,\"favourites_count\":282,\"description\":\"Junior Java Developer @Brandwatch. Computer Science Student @SussexUni. Also a fan of cuddly animals and hot drinks. Words are my own\",\"created_at\":\"Sat Nov 21 16:53:59 +0000 2009\",\"is_translator\":false,\"profile_background_image_url_https\":\"https://abs.twimg.com/images/themes/theme2/bg.gif\",\"protected\":false,\"screen_name\":\"jessicambowden\",\"id_str\":\"91608478\",\"profile_link_color\":\"1F98C7\",\"is_translation_enabled\":false,\"id\":91608478,\"geo_enabled\":true,\"profile_background_color\":\"C6E2EE\",\"lang\":\"en\",\"profile_sidebar_border_color\":\"C6E2EE\",\"profile_location\":null,\"profile_text_color\":\"663B12\",\"verified\":false,\"profile_image_url\":\"http://pbs.twimg.com/profile_images/522798955285868544/ebu0ovtQ_normal.jpeg\",\"time_zone\":\"London\",\"url\":null,\"contributors_enabled\":false,\"profile_background_tile\":false,\"entities\":{\"description\":{\"urls\":[]}},\"statuses_count\":1919,\"follow_request_sent\":false,\"followers_count\":155,\"profile_use_background_image\":true,\"default_profile\":false,\"following\":false,\"name\":\"Jessica Bowden\",\"location\":\"Brighton\",\"profile_sidebar_fill_color\":\"DAECF4\",\"notifications\":false},\"favorited\":false}");
-        System.out.println(jsonObject);
-        UserDTO userDTO = new UserDTO();
-        UserDTO user = userDTO.createUserFromJson(jsonObject, BotStatus.FALSE);
-    }
 }

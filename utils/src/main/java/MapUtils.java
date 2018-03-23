@@ -41,7 +41,6 @@ public class MapUtils {
         return topThree;
     }
 
-    // should ideally return it sorted on the integers
     public HashMap<String, Integer> getIndividualCounts(ArrayList<String> list) {
         HashMap<String, Integer> map = Maps.newHashMap();
 
@@ -108,35 +107,4 @@ public class MapUtils {
         return newList;
 
     }
-
-    public static void main(String[] args) {
-        MapUtils mapTest = new MapUtils();
-
-        HashMap<String, Integer> map = new HashMap<String, Integer>();
-        map.put("z", 4);
-        map.put("l", 6);
-        map.put("b", 2);
-        map.put("f", 5);
-        map.put("j", 0);
-
-        ArrayList<String> stuff = Lists.newArrayList();
-        stuff.add("a");
-        stuff.add("a");
-        stuff.add("b");
-        stuff.add("c");
-        stuff.add("b");
-        stuff.add("a");
-
-        stuff.add("f");
-        stuff.add("f");
-        stuff.add("f");
-        stuff.add("f");
-        stuff.add("f");
-
-        HashMap<String, Integer> tada = mapTest.getIndividualCounts(stuff);
-
-        System.out.println(mapTest.sortByValueLargestFirst(tada));
-
-    }
-
 }

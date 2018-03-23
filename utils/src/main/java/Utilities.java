@@ -130,10 +130,4 @@ public class Utilities {
         return fileToArray("stopwords.txt");
     }
 
-    public static void main(String[] args) {
-        Utilities utilities = new Utilities();
-        System.out.println(utilities.isStopWord("the"));
-        System.out.println(utilities.isStopWord("RT"));
-    }
-
 }

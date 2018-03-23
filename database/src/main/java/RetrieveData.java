@@ -298,15 +298,4 @@ public class RetrieveData {
             System.out.println(username);
         }
     }
-
-    public static void main(String[] args) {
-        //read in humansTest.txt
-        RetrieveData retrieveData = new RetrieveData();
-        Utilities utilities = new Utilities();
-        ArrayList<String> bots = utilities.fileToArray("botsTest.txt");
-
-        for (String bot : bots) {
-            retrieveData.checkForUser(bot);
-        }
-    }
 }

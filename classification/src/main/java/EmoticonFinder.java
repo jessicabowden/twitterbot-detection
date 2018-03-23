@@ -50,7 +50,6 @@ public class EmoticonFinder {
         emoticons.add(":-*");
         emoticons.add(":O");
         emoticons.add(":-O");
-//        emoticons.add(":3");
         emoticons.add(":p");
         emoticons.add(":|");
         emoticons.add(":'(");
@@ -88,50 +87,5 @@ public class EmoticonFinder {
         }
 
         return emoji;
-    }
-
-//    public void hasEmoji(String status) {
-//                String regexPattern = "[\uD83C-\uDBFF\uDC00-\uDFFF]+";
-        ////        String regexPattern = "[\uD83C\uDBFF\uDC00\uDFFF]+";
-        //
-        //        byte[] utf8 = new byte[0];
-        //
-        //        String string1 = null;
-        //
-        //        try {
-        //            utf8 = status.getBytes("UTF-8");
-        //            string1 = new String(utf8, "UTF-8");
-        //        } catch (UnsupportedEncodingException e) {
-        //            e.printStackTrace();
-        //        }
-        //
-        //        Pattern pattern = Pattern.compile(regexPattern);
-        //        Matcher matcher = pattern.matcher(string1);
-        //        List<String> matchList = new ArrayList<String>();
-        //
-        //        while (matcher.find()) {
-        //            matchList.add(matcher.group());
-        ////            return true;
-        //        }
-        //
-        //        for (int i = 0; i < matchList.size(); i++) {
-        //            System.out.println(i + ":" + matchList.get(i));
-        //        }
-        //
-        //        System.out.println(matchList.size());
-        //
-        ////        return false;
-        //    }
-
-    public static void main(String[] args) {
-        Long user = 14304170L;
-
-        EmoticonFinder emoticonFinder = new EmoticonFinder();
-
-        System.out.println(emoticonFinder.emoticons(user).size());
-//        String s = "Emoticon tweet \uD83D\uDE34\uD83D\uDE04";
-
-//        System.out.println(emoticonFinder.hasEmoji(s));
-
     }
 }

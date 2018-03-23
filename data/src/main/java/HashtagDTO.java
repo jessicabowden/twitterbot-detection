@@ -11,7 +11,6 @@ public class HashtagDTO {
     public HashtagDTO createHashtagFromJson(JSONObject jsonObject) {
         HashtagDTO hashtagDTO = new HashtagDTO();
 
-//        hashtagDTO.setHashtag(jsonObject.getString("has"));
         return hashtagDTO;
     }
 

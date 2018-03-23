@@ -13,8 +13,6 @@ public class TopWordsInTweets {
     MapUtils mapUtils = new MapUtils();
     RetrieveData retrieveData = new RetrieveData();
 
-    //might have to manually look for trends btwn top ten words & top ten stop words
-        // before further doing stuff and things
     public ArrayList<String> topTenWords(Long userId) {
         ArrayList<String> tweets = retrieveData.getTweets(userId);
         HashMap<String, Integer> topWords = topWords(userId);
@@ -134,19 +132,5 @@ public class TopWordsInTweets {
         Double r = f2f.getRatio(new Double(nonStopWord), new Double(stopWord));
 
         return r.toString();
-
-//        return nonStopWord.toString() + ":" + stopWord.toString();
-    }
-
-    public static void main(String[] args) {
-        //Test
-
-        TopWordsInTweets topWordsInTweets = new TopWordsInTweets();
-
-        Long user = 14304170L;
-
-//        System.out.println(topWordsInTweets.topTenNonStopWords(user));
-//        System.out.println(topWordsInTweets.topTenStopWords(user));
-        System.out.println(topWordsInTweets.ratio(user));
     }
 }

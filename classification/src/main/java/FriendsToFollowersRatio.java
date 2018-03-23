@@ -8,16 +8,6 @@ import java.util.ArrayList;
 public class FriendsToFollowersRatio {
     RetrieveData retrieveData = new RetrieveData();
 
-//    public String predictedStatusFromRatio(Long userId) {
-//        double ratio = getFriendshipRatio(userId);
-//
-//        if (ratio <= 1.0) {
-//            return "bot";
-//        }
-//
-//        return "human";
-//    }
-
     public Double getFriendshipRatio(Long userId) {
         ArrayList<Long> friendsAndFollowers = retrieveData.getFriendsAndFollowers(userId);
         return getRatio(friendsAndFollowers.get(0), friendsAndFollowers.get(1));
@@ -41,14 +31,5 @@ public class FriendsToFollowersRatio {
         bd = bd.setScale(places, RoundingMode.HALF_UP);
 
         return bd.doubleValue();
-    }
-
-    public static void main(String[] args) {
-        //Test
-        FriendsToFollowersRatio friendsToFollowersRatio = new FriendsToFollowersRatio();
-
-        Long userId = 2575207160L;
-
-        System.out.println(friendsToFollowersRatio.getFriendshipRatio(userId));
     }
 }
