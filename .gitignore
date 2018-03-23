@@ -1,0 +1,8 @@
+# Ignore intellij files
+.idea/*
+
+.gitattributes
+
+*.properties
+
+*.txt
